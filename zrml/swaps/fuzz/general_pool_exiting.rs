@@ -4,12 +4,11 @@ use libfuzzer_sys::fuzz_target;
 use zrml_swaps::mock::{ExtBuilder, Origin, Swaps};
 
 mod data_structs;
-use data_structs::GeneralPoolData;
+use data_structs::{GeneralPoolData, POOL_LIQUIDITY};
 use zeitgeist_primitives::{traits::Swaps as SwapsTrait, types::ScoringRule};
 mod helper_functions;
 use helper_functions::asset;
 use orml_traits::MultiCurrency;
-use zeitgeist_primitives::constants::MinLiquidity;
 use zrml_swaps::mock::Shares;
 
 fuzz_target!(|data: GeneralPoolData| {
@@ -17,8 +16,8 @@ fuzz_target!(|data: GeneralPoolData| {
     let _ = ext.execute_with(|| {
         // ensure that the account origin has a sufficient balance
         // use orml_traits::MultiCurrency; required for this
-        for a in data.pool_creation.assets.clone() {
-            let _ = Shares::deposit(asset(a), &data.pool_creation.origin, MinLiquidity::get());
+        for a in &data.pool_creation.assets {
+            let _ = Shares::deposit(asset(*a), &data.pool_creation.origin, POOL_LIQUIDITY);
         }
         match Swaps::create_pool(
             data.pool_creation.origin,

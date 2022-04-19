@@ -3,13 +3,17 @@
     clippy::integer_arithmetic
 )]
 
-use zeitgeist_primitives::constants::{MaxAssets, MaxTotalWeight, MinAssets, MinWeight};
+use zeitgeist_primitives::constants::{
+    MaxAssets, MaxTotalWeight, MinAssets, MinLiquidity, MinWeight,
+};
 
 use arbitrary::{Arbitrary, Result, Unstructured};
 
 use rand::Rng;
 
-#[derive(Debug)]
+pub const POOL_LIQUIDITY: u128 = MinLiquidity::get();
+
+#[derive(Debug, Clone)]
 pub struct ValidPoolData {
     pub origin: u128,
     pub assets: Vec<(u128, u16)>,
@@ -79,12 +83,29 @@ pub struct ExactAssetAmountData {
     pub pool_amount: u128,
 }
 
-#[derive(Debug, Arbitrary)]
+#[derive(Debug)]
 pub struct GeneralPoolData {
     pub origin: u128,
     pub pool_creation: ValidPoolData,
     pub pool_amount: u128,
     pub assets: Vec<u128>,
+}
+
+impl<'a> arbitrary::Arbitrary<'a> for GeneralPoolData {
+    fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
+        let mut rng = rand::thread_rng();
+        let origin = u128::arbitrary(u)?;
+        let pool_creation = ValidPoolData::arbitrary(u)?;
+        // POOL_LIQUIDITY = 1_000_000_000_000
+        let pool_amount = rng.gen_range(0..=POOL_LIQUIDITY);
+        let assets_len = pool_creation.assets.len();
+        let mut assets = Vec::with_capacity(assets_len);
+        for _ in 0..assets_len {
+            let upper_bound_balance = rng.gen_range(pool_amount..=assets_len as u128 * pool_amount);
+            assets.push(upper_bound_balance);
+        }
+        Ok(GeneralPoolData { origin, pool_creation, pool_amount, assets })
+    }
 }
 
 #[derive(Debug, Arbitrary)]

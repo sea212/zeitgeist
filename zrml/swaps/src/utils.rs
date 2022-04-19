@@ -113,6 +113,11 @@ where
         let amount = bmul(ratio.saturated_into(), balance.saturated_into())?.saturated_into();
         transferred.push(amount);
         ensure!(amount != Zero::zero(), Error::<T>::MathApproximation);
+        println!(
+            "POOL_AMOUNT: {:?}; TOTAL_ISSUANCE: {:?}; RATIO: {:?}; BALANCE: {:?}; \
+             RATIO_AMOUNT_OF_POOL: {:?}; BOUND: {:?}",
+            p.pool_amount, total_issuance, ratio, balance, amount, amount_bound
+        );
         (p.transfer_asset)(amount, amount_bound, asset)?;
     }
 

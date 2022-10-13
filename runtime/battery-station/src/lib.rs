@@ -110,8 +110,6 @@ impl Contains<Call> for IsCallable {
             Call::LiquidityMining(_) => false,
             Call::PredictionMarkets(inner_call) => {
                 match inner_call {
-                    // Disable Rikiddo markets
-                    create_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
                     // Disable Court & SimpleDisputes dispute resolution mechanism
                     create_market { dispute_mechanism: Court | SimpleDisputes, .. } => false,
                     create_cpmm_market_and_deploy_assets {

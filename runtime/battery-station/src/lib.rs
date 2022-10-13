@@ -100,7 +100,6 @@ impl Contains<Call> for IsCallable {
     fn contains(call: &Call) -> bool {
         use zeitgeist_primitives::types::{
             MarketDisputeMechanism::{Court, SimpleDisputes},
-            ScoringRule::RikiddoSigmoidFeeMarketEma,
         };
         use zrml_prediction_markets::Call::{create_cpmm_market_and_deploy_assets, create_market};
 

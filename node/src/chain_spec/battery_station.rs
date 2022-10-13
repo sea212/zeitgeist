@@ -73,11 +73,11 @@ fn additional_chain_spec_staging_battery_station(
 fn additional_chain_spec_staging_battery_station() -> AdditionalChainSpec {
     AdditionalChainSpec {
         initial_authorities: vec![(
-            // 5FCSJzvmeUW1hBo3ASnLzSxpUdn5QUDt1Eqobj1meiQB7mLu
-            hex!["8a9a54bdf73fb4a757f5ab81fabe2f173922fdb92bb8b6e8bedf8b17fa38f500"]
+            // 5CA5cgGgeRKQWsbJpBMik1hnksCV9NeooDssk69acgib3JJr
+            hex!["0419793dc5817587f5d9dbfd738a5243b518c8da9b02185f5100a59955c40601"]
                 .unchecked_into(),
-            // 5HGProUwcyCDMJDxjBBKbv8u7ehr5uoTBS3bckYHPcZMTifW
-            hex!["e61786c6426b55a034f9c4b78dc57d4183927cef8e64b2e496225ed6fca41758"]
+            // 5GECgnLk8rto8BPnWWMT7MbP1ypjcYaVJPQb345inuDDacaj
+            hex!["b82f30fd10dd91632cb8a15124522ad0fbbaf345a155d18997b6df6b85f8a5f2"]
                 .unchecked_into(),
         )],
     }

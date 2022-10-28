@@ -17,6 +17,8 @@
 
 use crate::{Config, Disputes, Pallet};
 use alloc::{vec, vec::Vec};
+#[cfg(feature = "try-runtime")]
+use frame_support::traits::OnRuntimeUpgradeHelpersExt;
 use frame_support::{
     dispatch::Weight,
     log,
@@ -199,8 +201,13 @@ where
 
     #[cfg(feature = "try-runtime")]
     fn pre_upgrade() -> Result<(), &'static str> {
+        Self::set_temp_storage(
+            MarketCommonsPallet::<T>::market_iter().count() as u128,
+            "market_count",
+        );
+
         // Check that no saturation occurs.
-        for (market_id, market) in MarketCommonsPallet::<T>::market_iter().drain() {
+        for (market_id, market) in MarketCommonsPallet::<T>::market_iter() {
             if let MarketType::Scalar(range) = market.market_type {
                 assert!(
                     range.end().checked_mul(BASE).is_some(),
@@ -215,7 +222,11 @@ where
 
     #[cfg(feature = "try-runtime")]
     fn post_upgrade() -> Result<(), &'static str> {
-        for (market_id, market) in MarketCommonsPallet::<T>::market_iter().drain() {
+        // Check that the iterator's size hasn't changed.
+        let market_count_before = Self::get_temp_storage::<u128>("market_count").unwrap();
+        assert_eq!(MarketCommonsPallet::<T>::market_iter().count() as u128, market_count_before);
+
+        for (market_id, market) in MarketCommonsPallet::<T>::market_iter() {
             if let MarketType::Scalar(range) = market.market_type {
                 assert_ne!(
                     range.start(),

@@ -37,6 +37,7 @@ cfg_if::cfg_if! {
         const DEFAULT_STAKING_AMOUNT_ZEITGEIST: u128 = MinCollatorStk::get();
         const DEFAULT_COLLATOR_BALANCE_ZEITGEIST: Option<u128> =
             DEFAULT_STAKING_AMOUNT_ZEITGEIST.checked_add(CollatorDeposit::get());
+        const DEFAULT_SUDO_BALANCE_ZEITGEIST: u128 = 1_000_000 * zeitgeist_primitives::constants::BASE;
         const DEFAULT_INITIAL_CROWDLOAN_FUNDS_ZEITGEIST: u128 = 0;
         pub type ZeitgeistChainSpec = sc_service::GenericChainSpec<zeitgeist_runtime::GenesisConfig, Extensions>;
     } else {
@@ -63,6 +64,12 @@ fn endowed_accounts_staging_zeitgeist() -> Vec<EndowedAccountWithBalance> {
         EndowedAccountWithBalance(
             hex!["b449a256f73e59602eb742071a07e4d94aaae91e6872f28e161f34982a0bfc0d"].into(),
             DEFAULT_COLLATOR_BALANCE_ZEITGEIST.unwrap(),
+        ),
+        // SUDO: dE1XauqqGUpwhLRFsgfPaid92t5qjfitiXYnUyZGPE1uR8XKB
+        #[cfg(feature = "parachain")]
+        EndowedAccountWithBalance(
+        hex!["6eeba150affddce160006a3f3070244fcb87e3f037e1f49bedc0bc630ddc507f"].into(),
+            DEFAULT_SUDO_BALANCE_ZEITGEIST,
         ),
     ]
 }

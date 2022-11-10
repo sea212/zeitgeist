@@ -127,7 +127,17 @@ impl Contains<Call> for IsCallable {
 }
 
 decl_common_types!();
-create_runtime_with_additional_pallets!();
+
+create_runtime_with_additional_pallets!(
+    // Others
+    Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
+);
+
+impl pallet_sudo::Config for Runtime {
+    type Call = Call;
+    type Event = Event;
+}
+
 impl_config_traits!();
 create_runtime_api!();
 create_common_benchmark_logic!();

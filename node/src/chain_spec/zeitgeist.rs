@@ -113,12 +113,20 @@ fn additional_chain_spec_staging_zeitgeist() -> AdditionalChainSpec {
     }
 }
 
+fn root_key_staging_zeitgeist() -> zeitgeist_primitives::types::AccountId {
+    // dE1XauqqGUpwhLRFsgfPaid92t5qjfitiXYnUyZGPE1uR8XKB
+    hex!["6eeba150affddce160006a3f3070244fcb87e3f037e1f49bedc0bc630ddc507f"].into()
+}
+
 #[inline]
 pub(super) fn get_wasm() -> Result<&'static [u8], String> {
     zeitgeist_runtime::WASM_BINARY.ok_or_else(|| "WASM binary is not available".to_string())
 }
 
-generate_generic_genesis_function!(zeitgeist_runtime,);
+generate_generic_genesis_function!(
+    zeitgeist_runtime,
+    sudo: zeitgeist_runtime::SudoConfig { key: Some(root_key_staging_zeitgeist()) },
+);
 
 pub fn zeitgeist_staging_config(
     #[cfg(feature = "parachain")] parachain_id: cumulus_primitives_core::ParaId,

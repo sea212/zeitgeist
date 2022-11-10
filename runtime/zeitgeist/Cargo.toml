@@ -21,6 +21,7 @@ pallet-preimage = { branch = "polkadot-v0.9.23", default-features = false, git =
 pallet-proxy = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
 pallet-randomness-collective-flip = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
 pallet-scheduler = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
+pallet-sudo = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
 pallet-timestamp = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
 pallet-transaction-payment = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }
 pallet-transaction-payment-rpc-runtime-api = { branch = "polkadot-v0.9.23", default-features = false, git = "https://github.com/paritytech/substrate" }

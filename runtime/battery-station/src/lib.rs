@@ -116,9 +116,11 @@ impl Contains<Call> for IsCallable {
                 match inner_call {
                     // Disable Rikiddo markets
                     create_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
+                    edit_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
                     // Disable Court dispute resolution mechanism
                     create_market { dispute_mechanism: Court, .. } => false,
                     create_cpmm_market_and_deploy_assets { dispute_mechanism: Court, .. } => false,
+                    edit_market { dispute_mechanism: Court, .. } => false,
                     _ => true,
                 }
             }

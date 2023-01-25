@@ -35,8 +35,6 @@ use sp_runtime::{
 };
 use zeitgeist_primitives::types::{Asset, SerdeWrapper};
 
-pub use zrml_swaps_runtime_api::SwapsApi as SwapsRuntimeApi;
-
 #[rpc(client, server)]
 pub trait SwapsApi<BlockHash, BlockNumber, PoolId, AccountId, Balance, MarketId>
 where
@@ -110,7 +108,6 @@ impl<C, Block, PoolId, AccountId, Balance, MarketId>
 where
     Block: BlockT,
     C: Send + Sync + 'static + ProvideRuntimeApi<Block> + HeaderBackend<Block>,
-    C::Api: SwapsRuntimeApi<Block, PoolId, AccountId, Balance, MarketId>,
     PoolId: Clone + Codec + MaybeDisplay + MaybeFromStr + Send + 'static,
     AccountId: Clone + Display + Codec + Send + 'static,
     Balance: Codec + MaybeDisplay + MaybeFromStr + MaxEncodedLen + Send + 'static,

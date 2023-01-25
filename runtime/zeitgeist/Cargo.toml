@@ -21,6 +21,7 @@ pallet-preimage = { branch = "moonbeam-polkadot-v0.9.29", default-features = fal
 pallet-proxy = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-randomness-collective-flip = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-scheduler = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
+pallet-sudo = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-timestamp = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-transaction-payment = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-transaction-payment-rpc-runtime-api = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
@@ -233,6 +234,7 @@ std = [
     "pallet-proxy/std",
     "pallet-randomness-collective-flip/std",
     "pallet-scheduler/std",
+    "pallet-sudo/std",
     "pallet-timestamp/std",
     "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-transaction-payment/std",
@@ -329,6 +331,7 @@ try-runtime = [
     "pallet-timestamp/try-runtime",
     "pallet-randomness-collective-flip/try-runtime",
     "pallet-scheduler/try-runtime",
+    "pallet-sudo/try-runtime",
     "pallet-preimage/try-runtime",
 
     # Money runtime pallets

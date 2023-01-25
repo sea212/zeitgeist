@@ -103,11 +103,6 @@ macro_rules! generate_generic_genesis_function {
         ) -> $runtime::GenesisConfig {
             $runtime::GenesisConfig {
                 // Common genesis
-                advisory_committee: Default::default(),
-                advisory_committee_membership: $runtime::AdvisoryCommitteeMembershipConfig {
-                    members: vec![].try_into().unwrap(),
-                    phantom: Default::default(),
-                },
                 #[cfg(feature = "parachain")]
                 asset_registry: Default::default(),
                 #[cfg(not(feature = "parachain"))]
@@ -130,21 +125,9 @@ macro_rules! generate_generic_genesis_function {
                 balances: $runtime::BalancesConfig {
                     balances: endowed_accounts.iter().cloned().map(|k| (k.0, k.1)).collect(),
                 },
-                council: Default::default(),
-                council_membership: $runtime::CouncilMembershipConfig {
-                    members: vec![].try_into().unwrap(),
-                    phantom: Default::default(),
-                },
-                #[cfg(feature = "parachain")]
-                crowdloan: $runtime::CrowdloanConfig { funded_amount: acs.crowdloan_fund_pot },
-                democracy: Default::default(),
                 #[cfg(not(feature = "parachain"))]
                 grandpa: $runtime::GrandpaConfig {
                     authorities: acs.initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
-                },
-                liquidity_mining: $runtime::LiquidityMiningConfig {
-                    initial_balance: LIQUIDITY_MINING,
-                    per_block_distribution: LIQUIDITY_MINING_PTD.mul_ceil(LIQUIDITY_MINING),
                 },
                 #[cfg(feature = "parachain")]
                 parachain_info: $runtime::ParachainInfoConfig { parachain_id: acs.parachain_id },
@@ -168,15 +151,8 @@ macro_rules! generate_generic_genesis_function {
                 // Default should use the pallet configuration
                 polkadot_xcm: PolkadotXcmConfig::default(),
                 system: $runtime::SystemConfig { code: wasm_binary.to_vec() },
-                technical_committee: Default::default(),
-                technical_committee_membership: $runtime::TechnicalCommitteeMembershipConfig {
-                    members: vec![].try_into().unwrap(),
-                    phantom: Default::default(),
-                },
-                treasury: Default::default(),
                 transaction_payment: Default::default(),
                 tokens: Default::default(),
-                vesting: Default::default(),
 
                 // Additional genesis
                 $($additional_genesis)*

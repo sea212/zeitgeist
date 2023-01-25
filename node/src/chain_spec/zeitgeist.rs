@@ -24,7 +24,10 @@ use sc_service::ChainType;
 use sp_core::crypto::UncheckedInto;
 use zeitgeist_runtime::parameters::SS58Prefix;
 
-use zeitgeist_primitives::constants::ztg::{LIQUIDITY_MINING, LIQUIDITY_MINING_PTD};
+use zeitgeist_primitives::{types::{AccountId,Balance}, constants::{
+    BASE,
+    ztg::{LIQUIDITY_MINING, LIQUIDITY_MINING_PTD}
+}};
 
 #[cfg(feature = "parachain")]
 use {
@@ -48,26 +51,29 @@ cfg_if::cfg_if! {
     }
 }
 
+const DEFAULT_SUDO_BALANCE: Balance = 1000 * BASE;
+
 fn endowed_accounts_staging_zeitgeist() -> Vec<EndowedAccountWithBalance> {
     vec![
-        // dDzt4vaprRfHqGBat44bWD4i36WMDXjsGXmCHoxMom2eQgQCd
+        // dE4NNpcWPCk8TH3GM9eJV1jauEmHC3rQcxMdnTtrc3NgDGUNo
         #[cfg(feature = "parachain")]
         EndowedAccountWithBalance(
-            hex!["524e9aac979cbb9ecdb7acd1635755c3b15696321a3345ca77f0ab0ae23f675a"].into(),
-            DEFAULT_COLLATOR_BALANCE_ZEITGEIST.unwrap(),
+            hex!["ec9a6c37972582ce411546f96f806cfc2bb0670f60c30cbc3ad4276834b0253c"].into(),
+            DEFAULT_COLLATOR_BALANCE_RAUMGEIST.unwrap(),
         ),
-        // dDy7WSPy4pvWBKsUta8MdWxduWFTpJtv9zgBiVGtqWmMh6bi6
+        // dDzXWuvDPSRXMQFAq2cJdr9NtEjtB8bohFhE3Ap9yM9s7rUQf
         #[cfg(feature = "parachain")]
         EndowedAccountWithBalance(
-            hex!["04163722a7f1f900c1ec502383d4959360e374c8808e13d47b3e553d761a6329"].into(),
-            DEFAULT_COLLATOR_BALANCE_ZEITGEIST.unwrap(),
+            hex!["42a1ef95149913305fb05b6ac325ab9ed4b68c8d7aa60e3ea4daf4237dd9fc09"].into(),
+            DEFAULT_COLLATOR_BALANCE_RAUMGEIST.unwrap(),
         ),
-        // dE36Y98QpX8hEkLANntbtUvt7figSPGxSrDxU4sscuX989CTJ
+        // dE375YCauT8vxvXwzBGaeCfPsKTXuuBpJaqCsBqRhoySNdmtE
         #[cfg(feature = "parachain")]
         EndowedAccountWithBalance(
-            hex!["b449a256f73e59602eb742071a07e4d94aaae91e6872f28e161f34982a0bfc0d"].into(),
-            DEFAULT_COLLATOR_BALANCE_ZEITGEIST.unwrap(),
+            hex!["b4b3541a95c83a71de977a6f1e7e66e594a4d47c48b030802c90ba589c8bba16"].into(),
+            DEFAULT_COLLATOR_BALANCE_RAUMGEIST.unwrap(),
         ),
+        EndowedAccountWithBalance(root_key_staging_zeitgeist(), DEFAULT_SUDO_BALANCE),
     ]
 }
 
@@ -76,32 +82,29 @@ fn additional_chain_spec_staging_zeitgeist(
     parachain_id: cumulus_primitives_core::ParaId,
 ) -> AdditionalChainSpec {
     AdditionalChainSpec {
-        blocks_per_round: DefaultBlocksPerRound::get(),
         candidates: vec![
             (
-                hex!["524e9aac979cbb9ecdb7acd1635755c3b15696321a3345ca77f0ab0ae23f675a"].into(),
-                hex!["e251731d35dd19aeb7db1ffe06227d0b7da3b3eabb5ec1d79da453ac9949e80b"]
+                hex!["ec9a6c37972582ce411546f96f806cfc2bb0670f60c30cbc3ad4276834b0253c"].into(),
+                hex!["725d4d2948ae3a703f7a4911daa6d3022b45dc54fe1998ea88cb33a6f2bd805a"]
                     .unchecked_into(),
-                DEFAULT_STAKING_AMOUNT_ZEITGEIST,
+                DEFAULT_STAKING_AMOUNT_RAUMGEIST,
             ),
             (
-                hex!["04163722a7f1f900c1ec502383d4959360e374c8808e13d47b3e553d761a6329"].into(),
-                hex!["76d3384620053d1eb67e0f7fa8af93a8028e5cf74f22a12a5f2393b286463753"]
+                hex!["42a1ef95149913305fb05b6ac325ab9ed4b68c8d7aa60e3ea4daf4237dd9fc09"].into(),
+                hex!["2cb04566bb52665950acf535c6b03312b00d896a3e33534e09dc948e16c06042"]
                     .unchecked_into(),
-                DEFAULT_STAKING_AMOUNT_ZEITGEIST,
+                DEFAULT_STAKING_AMOUNT_RAUMGEIST,
             ),
             (
-                hex!["b449a256f73e59602eb742071a07e4d94aaae91e6872f28e161f34982a0bfc0d"].into(),
-                hex!["14a3becfeeb700ff6a41927a2924493717aea238d9c5bea15368d61550f63e44"]
+                hex!["b4b3541a95c83a71de977a6f1e7e66e594a4d47c48b030802c90ba589c8bba16"].into(),
+                hex!["e23846832242a083b94df7640257a243fe1c5a730890b254600d953ddd65011c"]
                     .unchecked_into(),
-                DEFAULT_STAKING_AMOUNT_ZEITGEIST,
+                DEFAULT_STAKING_AMOUNT_RAUMGEIST,
             ),
         ],
-        collator_commission: DefaultCollatorCommission::get(),
-        crowdloan_fund_pot: DEFAULT_INITIAL_CROWDLOAN_FUNDS_ZEITGEIST,
-        inflation_info: DEFAULT_COLLATOR_INFLATION_INFO,
+        crowdloan_fund_pot: DEFAULT_INITIAL_CROWDLOAN_FUNDS_RAUMGEIST,
+        inflation_info: inflation_config(Perbill::from_percent(5), TOTAL_INITIAL_ZTG * BASE),
         nominations: vec![],
-        parachain_bond_reserve_percent: DefaultParachainBondReservePercent::get(),
         parachain_id,
     }
 }
@@ -110,11 +113,11 @@ fn additional_chain_spec_staging_zeitgeist(
 fn additional_chain_spec_staging_zeitgeist() -> AdditionalChainSpec {
     AdditionalChainSpec {
         initial_authorities: vec![(
-            // 5FCSJzvmeUW1hBo3ASnLzSxpUdn5QUDt1Eqobj1meiQB7mLu
-            hex!["8a9a54bdf73fb4a757f5ab81fabe2f173922fdb92bb8b6e8bedf8b17fa38f500"]
+            // Aura
+            hex!["5ce5033dba3f6f730f11c20d00c34c4d3fbe23eb81471255bfde689f25dc966e"]
                 .unchecked_into(),
-            // 5HGProUwcyCDMJDxjBBKbv8u7ehr5uoTBS3bckYHPcZMTifW
-            hex!["e61786c6426b55a034f9c4b78dc57d4183927cef8e64b2e496225ed6fca41758"]
+            // Grandpa
+            hex!["ffd00bcb47e83ed435ce55264cf89969041a5108fdfb3198c79dfe0b75f66600"]
                 .unchecked_into(),
         )],
     }
@@ -125,20 +128,33 @@ pub(super) fn get_wasm() -> Result<&'static [u8], String> {
     zeitgeist_runtime::WASM_BINARY.ok_or_else(|| "WASM binary is not available".to_string())
 }
 
-generate_generic_genesis_function!(zeitgeist_runtime,);
+#[inline]
+fn root_key_staging_zeitgeist() -> AccountId {
+    hex!["e6c622c6f2eaba444b68955501e535247c192b35e7b3e44e4c1dc24a514b4965"].into()
+}
 
-pub fn zeitgeist_staging_config() -> Result<ZeitgeistChainSpec, String> {
+generate_generic_genesis_function!(
+    zeitgeist_runtime,
+    sudo: zeitgeist_runtime::SudoConfig { key: Some(root_key_staging_zeitgeist()) },
+);
+
+#[cfg(feature = "parachain")]
+super::generate_inflation_config_function!(zeitgeist_runtime);
+
+pub fn zeitgeist_staging_config(
+    #[cfg(feature = "parachain")] parachain_id: cumulus_primitives_core::ParaId,
+) -> Result<ZeitgeistChainSpec, String> {
     let wasm = get_wasm()?;
 
     Ok(ZeitgeistChainSpec::from_genesis(
-        "Zeitgeist Staging",
+        "Raumgeist Staging",
         "zeitgeist_staging",
         ChainType::Live,
         move || {
             generic_genesis(
                 additional_chain_spec_staging_zeitgeist(
                     #[cfg(feature = "parachain")]
-                    KUSAMA_PARACHAIN_ID.into(),
+                    parachain_id,
                 ),
                 endowed_accounts_staging_zeitgeist(),
                 wasm,
@@ -148,11 +164,11 @@ pub fn zeitgeist_staging_config() -> Result<ZeitgeistChainSpec, String> {
         telemetry_endpoints(),
         Some("zeitgeist"),
         None,
-        Some(token_properties("ZTG", SS58Prefix::get())),
+        Some(token_properties("RGT", SS58Prefix::get())),
         #[cfg(feature = "parachain")]
         crate::chain_spec::Extensions {
-            relay_chain: "kusama".into(),
-            parachain_id: KUSAMA_PARACHAIN_ID,
+            relay_chain: "polkadot".into(),
+            parachain_id: parachain_id.into(),
         },
         #[cfg(not(feature = "parachain"))]
         Default::default(),

@@ -51,31 +51,12 @@ macro_rules! decl_common_types {
 
         type Address = sp_runtime::MultiAddress<AccountId, ()>;
 
-        #[cfg(feature = "parachain")]
         pub type Executive = frame_executive::Executive<
             Runtime,
             Block,
             frame_system::ChainContext<Runtime>,
             Runtime,
             AllPalletsWithSystem,
-            (
-                pallet_parachain_staking::migrations::MigrateAtStakeAutoCompound<Runtime>,
-                zrml_prediction_markets::migrations::UpdateMarketsForBaseAssetAndRecordBonds<Runtime>,
-                zrml_prediction_markets::migrations::AddFieldToAuthorityReport<Runtime>,
-            ),
-        >;
-
-        #[cfg(not(feature = "parachain"))]
-        pub type Executive = frame_executive::Executive<
-            Runtime,
-            Block,
-            frame_system::ChainContext<Runtime>,
-            Runtime,
-            AllPalletsWithSystem,
-            (
-                zrml_prediction_markets::migrations::UpdateMarketsForBaseAssetAndRecordBonds<Runtime>,
-                zrml_prediction_markets::migrations::AddFieldToAuthorityReport<Runtime>,
-            ),
         >;
 
         pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
@@ -215,7 +196,7 @@ macro_rules! decl_common_types {
                         FEES_AND_TIPS_TREASURY_PERCENTAGE,
                         FEES_AND_TIPS_BURN_PERCENTAGE,
                     );
-                    Treasury::on_unbalanced(split.0);
+                    // Treasury::on_unbalanced(split.0);
                 }
             }
         }
@@ -271,45 +252,45 @@ macro_rules! create_runtime {
                 System: frame_system::{Call, Config, Event<T>, Pallet, Storage} = 0,
                 Timestamp: pallet_timestamp::{Call, Pallet, Storage, Inherent} = 1,
                 RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 2,
-                Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>} = 3,
-                Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>} = 4,
+                // Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>} = 3,
+                // Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>} = 4,
 
                 // Money
                 Balances: pallet_balances::{Call, Config<T>, Event<T>, Pallet, Storage} = 10,
                 TransactionPayment: pallet_transaction_payment::{Config, Event<T>, Pallet, Storage} = 11,
-                Treasury: pallet_treasury::{Call, Config, Event<T>, Pallet, Storage} = 12,
-                Vesting: pallet_vesting::{Call, Config<T>, Event<T>, Pallet, Storage} = 13,
-                MultiSig: pallet_multisig::{Call, Event<T>, Pallet, Storage} = 14,
-                Bounties: pallet_bounties::{Call, Event<T>, Pallet, Storage} =  15,
+                // Treasury: pallet_treasury::{Call, Config, Event<T>, Pallet, Storage} = 12,
+                // Vesting: pallet_vesting::{Call, Config<T>, Event<T>, Pallet, Storage} = 13,
+                // MultiSig: pallet_multisig::{Call, Event<T>, Pallet, Storage} = 14,
+                // Bounties: pallet_bounties::{Call, Event<T>, Pallet, Storage} =  15,
 
                 // Governance
-                Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>} = 20,
-                AdvisoryCommittee: pallet_collective::<Instance1>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 21,
-                AdvisoryCommitteeMembership: pallet_membership::<Instance1>::{Call, Config<T>, Event<T>, Pallet, Storage} = 22,
-                Council: pallet_collective::<Instance2>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 23,
-                CouncilMembership: pallet_membership::<Instance2>::{Call, Config<T>, Event<T>, Pallet, Storage} = 24,
-                TechnicalCommittee: pallet_collective::<Instance3>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 25,
-                TechnicalCommitteeMembership: pallet_membership::<Instance3>::{Call, Config<T>, Event<T>, Pallet, Storage} = 26,
+                // Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>} = 20,
+                // AdvisoryCommittee: pallet_collective::<Instance1>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 21,
+                // AdvisoryCommitteeMembership: pallet_membership::<Instance1>::{Call, Config<T>, Event<T>, Pallet, Storage} = 22,
+                // Council: pallet_collective::<Instance2>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 23,
+                // CouncilMembership: pallet_membership::<Instance2>::{Call, Config<T>, Event<T>, Pallet, Storage} = 24,
+                // TechnicalCommittee: pallet_collective::<Instance3>::{Call, Config<T>, Event<T>, Origin<T>, Pallet, Storage} = 25,
+                // TechnicalCommitteeMembership: pallet_membership::<Instance3>::{Call, Config<T>, Event<T>, Pallet, Storage} = 26,
 
                 // Other Parity pallets
-                Identity: pallet_identity::{Call, Event<T>, Pallet, Storage} = 30,
+                // Identity: pallet_identity::{Call, Event<T>, Pallet, Storage} = 30,
                 Utility: pallet_utility::{Call, Event, Pallet, Storage} = 31,
-                Proxy: pallet_proxy::{Call, Event<T>, Pallet, Storage} = 32,
+                // Proxy: pallet_proxy::{Call, Event<T>, Pallet, Storage} = 32,
 
                 // Third-party
                 AssetManager: orml_currencies::{Call, Pallet, Storage} = 40,
                 Tokens: orml_tokens::{Config<T>, Event<T>, Pallet, Storage} = 41,
 
                 // Zeitgeist
-                MarketCommons: zrml_market_commons::{Pallet, Storage} = 50,
-                Authorized: zrml_authorized::{Call, Event<T>, Pallet, Storage} = 51,
-                Court: zrml_court::{Call, Event<T>, Pallet, Storage} = 52,
-                LiquidityMining: zrml_liquidity_mining::{Call, Config<T>, Event<T>, Pallet, Storage} = 53,
-                RikiddoSigmoidFeeMarketEma: zrml_rikiddo::<Instance1>::{Pallet, Storage} = 54,
-                SimpleDisputes: zrml_simple_disputes::{Event<T>, Pallet, Storage} = 55,
-                Swaps: zrml_swaps::{Call, Event<T>, Pallet, Storage} = 56,
-                PredictionMarkets: zrml_prediction_markets::{Call, Event<T>, Pallet, Storage} = 57,
-                Styx: zrml_styx::{Call, Event<T>, Pallet, Storage} = 58,
+                // MarketCommons: zrml_market_commons::{Pallet, Storage} = 50,
+                // Authorized: zrml_authorized::{Call, Event<T>, Pallet, Storage} = 51,
+                // Court: zrml_court::{Call, Event<T>, Pallet, Storage} = 52,
+                // LiquidityMining: zrml_liquidity_mining::{Call, Config<T>, Event<T>, Pallet, Storage} = 53,
+                // RikiddoSigmoidFeeMarketEma: zrml_rikiddo::<Instance1>::{Pallet, Storage} = 54,
+                // SimpleDisputes: zrml_simple_disputes::{Event<T>, Pallet, Storage} = 55,
+                // Swaps: zrml_swaps::{Call, Event<T>, Pallet, Storage} = 56,
+                // PredictionMarkets: zrml_prediction_markets::{Call, Event<T>, Pallet, Storage} = 57,
+                // Styx: zrml_styx::{Call, Event<T>, Pallet, Storage} = 58,
 
                 $($additional_pallets)*
             }
@@ -342,7 +323,7 @@ macro_rules! create_runtime_with_additional_pallets {
             XTokens: orml_xtokens::{Pallet, Storage, Call, Event<T>} = 126,
 
             // Third-party
-            Crowdloan: pallet_crowdloan_rewards::{Call, Config<T>, Event<T>, Pallet, Storage} = 130,
+            // Crowdloan: pallet_crowdloan_rewards::{Call, Config<T>, Event<T>, Pallet, Storage} = 130,
 
             // Others
             $($additional_pallets)*
@@ -595,6 +576,7 @@ macro_rules! impl_config_traits {
             type XcmExecutor = xcm_executor::XcmExecutor<XcmConfig>;
         }
 
+        /*
         #[cfg(feature = "parachain")]
         impl pallet_crowdloan_rewards::Config for Runtime {
             type Event = Event;
@@ -613,6 +595,7 @@ macro_rules! impl_config_traits {
                 cumulus_pallet_parachain_system::RelaychainBlockNumberProvider<Self>;
             type WeightInfo = pallet_crowdloan_rewards::weights::SubstrateWeight<Runtime>;
         }
+        */
 
         impl pallet_balances::Config for Runtime {
             type AccountStore = System;
@@ -626,6 +609,7 @@ macro_rules! impl_config_traits {
             type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
         }
 
+        /*
         impl pallet_collective::Config<AdvisoryCommitteeInstance> for Runtime {
             type DefaultVote = PrimeDefaultVote;
             type Event = Event;
@@ -822,9 +806,11 @@ macro_rules! impl_config_traits {
             type AnnouncementDepositBase = AnnouncementDepositBase;
             type AnnouncementDepositFactor = AnnouncementDepositFactor;
         }
+        */
 
         impl pallet_randomness_collective_flip::Config for Runtime {}
 
+        /*
         impl pallet_scheduler::Config for Runtime {
             type Event = Event;
             type Origin = Origin;
@@ -838,6 +824,7 @@ macro_rules! impl_config_traits {
             type PreimageProvider = Preimage;
             type NoPreimagePostponement = NoPreimagePostponement;
         }
+        */
 
         // Timestamp
         /// Custom getter for minimum timestamp delta.
@@ -891,6 +878,7 @@ macro_rules! impl_config_traits {
             type WeightToFee = IdentityFee<Balance>;
         }
 
+        /*
         impl pallet_treasury::Config for Runtime {
             type ApproveOrigin = EnsureRootOrTwoThirdsCouncil;
             type Burn = Burn;
@@ -924,6 +912,7 @@ macro_rules! impl_config_traits {
             type MaximumReasonLength = MaximumReasonLength;
             type WeightInfo = weights::pallet_bounties::WeightInfo<Runtime>;
         }
+        */
 
         impl pallet_utility::Config for Runtime {
             type Event = Event;
@@ -932,6 +921,7 @@ macro_rules! impl_config_traits {
             type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
         }
 
+        /*
         impl pallet_vesting::Config for Runtime {
             type Event = Event;
             type Currency = Balances;
@@ -943,10 +933,12 @@ macro_rules! impl_config_traits {
             // highest number of schedules that encodes less than 2^10.
             const MAX_VESTING_SCHEDULES: u32 = 28;
         }
+        */
 
         #[cfg(feature = "parachain")]
         impl parachain_info::Config for Runtime {}
 
+        /*
         impl zrml_authorized::Config for Runtime {
             type AuthorizedDisputeResolutionOrigin = EnsureRootOrHalfAdvisoryCommittee;
             type CorrectionPeriod = CorrectionPeriod;
@@ -1128,6 +1120,7 @@ macro_rules! impl_config_traits {
             type Currency = Balances;
             type WeightInfo = zrml_styx::weights::WeightInfo<Runtime>;
         }
+        */
     }
 }
 
@@ -1213,6 +1206,7 @@ macro_rules! create_runtime_api {
                     orml_list_benchmark!(list, extra, orml_currencies, crate::benchmarks::currencies);
                     orml_list_benchmark!(list, extra, orml_tokens, crate::benchmarks::tokens);
                     list_benchmark!(list, extra, pallet_balances, Balances);
+                    /*
                     list_benchmark!(list, extra, pallet_bounties, Bounties);
                     list_benchmark!(list, extra, pallet_collective, AdvisoryCommittee);
                     list_benchmark!(list, extra, pallet_democracy, Democracy);
@@ -1222,9 +1216,11 @@ macro_rules! create_runtime_api {
                     list_benchmark!(list, extra, pallet_preimage, Preimage);
                     list_benchmark!(list, extra, pallet_proxy, Proxy);
                     list_benchmark!(list, extra, pallet_scheduler, Scheduler);
+                    */
                     list_benchmark!(list, extra, pallet_timestamp, Timestamp);
-                    list_benchmark!(list, extra, pallet_treasury, Treasury);
+                    //list_benchmark!(list, extra, pallet_treasury, Treasury);
                     list_benchmark!(list, extra, pallet_utility, Utility);
+                    /*
                     list_benchmark!(list, extra, pallet_vesting, Vesting);
                     list_benchmark!(list, extra, zrml_swaps, Swaps);
                     list_benchmark!(list, extra, zrml_authorized, Authorized);
@@ -1235,6 +1231,7 @@ macro_rules! create_runtime_api {
                     list_benchmark!(list, extra, zrml_prediction_markets, PredictionMarkets);
                     list_benchmark!(list, extra, zrml_liquidity_mining, LiquidityMining);
                     list_benchmark!(list, extra, zrml_styx, Styx);
+                    */
 
                     cfg_if::cfg_if! {
                         if #[cfg(feature = "parachain")] {
@@ -1243,7 +1240,7 @@ macro_rules! create_runtime_api {
                             list_benchmark!(list, extra, pallet_author_mapping, AuthorMapping);
                             list_benchmark!(list, extra, pallet_author_slot_filter, AuthorFilter);
                             list_benchmark!(list, extra, pallet_parachain_staking, ParachainStaking);
-                            list_benchmark!(list, extra, pallet_crowdloan_rewards, Crowdloan);
+                            // list_benchmark!(list, extra, pallet_crowdloan_rewards, Crowdloan);
                         } else {
                             list_benchmark!(list, extra, pallet_grandpa, Grandpa);
                         }
@@ -1292,6 +1289,7 @@ macro_rules! create_runtime_api {
                     orml_add_benchmark!(params, batches, orml_currencies, crate::benchmarks::currencies);
                     orml_add_benchmark!(params, batches, orml_tokens, crate::benchmarks::tokens);
                     add_benchmark!(params, batches, pallet_balances, Balances);
+                    /*
                     add_benchmark!(params, batches, pallet_bounties, Bounties);
                     add_benchmark!(params, batches, pallet_collective, AdvisoryCommittee);
                     add_benchmark!(params, batches, pallet_democracy, Democracy);
@@ -1301,9 +1299,11 @@ macro_rules! create_runtime_api {
                     add_benchmark!(params, batches, pallet_preimage, Preimage);
                     add_benchmark!(params, batches, pallet_proxy, Proxy);
                     add_benchmark!(params, batches, pallet_scheduler, Scheduler);
+                    */
                     add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-                    add_benchmark!(params, batches, pallet_treasury, Treasury);
+                    //add_benchmark!(params, batches, pallet_treasury, Treasury);
                     add_benchmark!(params, batches, pallet_utility, Utility);
+                    /*
                     add_benchmark!(params, batches, pallet_vesting, Vesting);
                     add_benchmark!(params, batches, zrml_swaps, Swaps);
                     add_benchmark!(params, batches, zrml_authorized, Authorized);
@@ -1314,6 +1314,7 @@ macro_rules! create_runtime_api {
                     add_benchmark!(params, batches, zrml_prediction_markets, PredictionMarkets);
                     add_benchmark!(params, batches, zrml_liquidity_mining, LiquidityMining);
                     add_benchmark!(params, batches, zrml_styx, Styx);
+                    */
 
 
                     cfg_if::cfg_if! {
@@ -1501,6 +1502,7 @@ macro_rules! create_runtime_api {
                 }
             }
 
+            /*
             impl zrml_swaps_runtime_api::SwapsApi<Block, PoolId, AccountId, Balance, MarketId>
             for Runtime
             {
@@ -1521,6 +1523,7 @@ macro_rules! create_runtime_api {
                     Asset::PoolShare(SerdeWrapper(pool_id))
                 }
             }
+            */
 
             #[cfg(feature = "try-runtime")]
             impl frame_try_runtime::TryRuntime<Block> for Runtime {

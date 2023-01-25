@@ -101,46 +101,14 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 #[derive(scale_info::TypeInfo)]
 pub struct IsCallable;
 
-// Currently disables Court, Rikiddo and creation of markets using Court.
 impl Contains<Call> for IsCallable {
     fn contains(call: &Call) -> bool {
-        use zeitgeist_primitives::types::{
-            MarketDisputeMechanism::Court, ScoringRule::RikiddoSigmoidFeeMarketEma,
-        };
-        use zrml_prediction_markets::Call::{
-            create_cpmm_market_and_deploy_assets, create_market, edit_market,
-        };
-
-        #[allow(clippy::match_like_matches_macro)]
-        match call {
-            Call::Court(_) => false,
-            Call::LiquidityMining(_) => false,
-            Call::PredictionMarkets(inner_call) => {
-                match inner_call {
-                    // Disable Rikiddo markets
-                    create_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
-                    edit_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
-                    // Disable Court dispute resolution mechanism
-                    create_market { dispute_mechanism: Court, .. } => false,
-                    create_cpmm_market_and_deploy_assets { dispute_mechanism: Court, .. } => false,
-                    edit_market { dispute_mechanism: Court, .. } => false,
-                    _ => true,
-                }
-            }
-            _ => true,
-        }
+        true
     }
 }
 
 decl_common_types!();
 
-#[cfg(feature = "with-global-disputes")]
-create_runtime_with_additional_pallets!(
-    GlobalDisputes: zrml_global_disputes::{Call, Event<T>, Pallet, Storage} = 59,
-    Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
-);
-
-#[cfg(not(feature = "with-global-disputes"))]
 create_runtime_with_additional_pallets!(
     Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
 );

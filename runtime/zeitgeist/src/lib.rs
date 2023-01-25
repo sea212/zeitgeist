@@ -87,8 +87,8 @@ pub mod parameters;
 pub mod xcm_config;
 
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: create_runtime_str!("zeitgeist"),
-    impl_name: create_runtime_str!("zeitgeist"),
+    spec_name: create_runtime_str!("zeitgeist-polkadot"),
+    impl_name: create_runtime_str!("zeitgeist-forecasting-technologies"),
     authoring_version: 1,
     spec_version: 42,
     impl_version: 1,
@@ -100,107 +100,22 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 #[derive(scale_info::TypeInfo)]
 pub struct IsCallable;
 
-// Currently disables Court, Rikiddo and creation of markets using Court or SimpleDisputes
-// dispute mechanism.
 impl Contains<Call> for IsCallable {
     fn contains(call: &Call) -> bool {
-        #[cfg(feature = "parachain")]
-        use cumulus_pallet_dmp_queue::Call::service_overweight;
-        use frame_system::Call::{
-            kill_prefix, kill_storage, set_code, set_code_without_checks, set_storage,
-        };
-        use orml_currencies::Call::update_balance;
-        use pallet_balances::Call::{force_transfer, set_balance};
-        use pallet_collective::Call::set_members;
-        use pallet_vesting::Call::force_vested_transfer;
-
-        use zeitgeist_primitives::types::{
-            MarketDisputeMechanism::{Court, SimpleDisputes},
-            ScoringRule::RikiddoSigmoidFeeMarketEma,
-        };
-        use zrml_prediction_markets::Call::{
-            create_cpmm_market_and_deploy_assets, create_market, edit_market,
-        };
-
-        #[allow(clippy::match_like_matches_macro)]
-        match call {
-            // Membership is managed by the respective Membership instance
-            Call::AdvisoryCommittee(set_members { .. }) => false,
-            // See "balance.set_balance"
-            Call::AssetManager(update_balance { .. }) => false,
-            Call::Balances(inner_call) => {
-                match inner_call {
-                    // Balances should not be set. All newly generated tokens be minted by well
-                    // known and approved processes, like staking. However, this could be used
-                    // in some cases to fund system accounts like the parachain sorveign account
-                    // in case something goes terribly wrong (like a hack that draws the funds
-                    // from such an account, see Maganta hack). Invoking this function one can
-                    // also easily mess up consistency in regards to reserved tokens and locks.
-                    set_balance { .. } => false,
-                    // There should be no reason to force an account to transfer funds.
-                    force_transfer { .. } => false,
-                    _ => true,
-                }
-            }
-            // Membership is managed by the respective Membership instance
-            Call::Council(set_members { .. }) => false,
-            Call::Court(_) => false,
-            #[cfg(feature = "parachain")]
-            Call::DmpQueue(service_overweight { .. }) => false,
-            Call::LiquidityMining(_) => false,
-            Call::PredictionMarkets(inner_call) => {
-                match inner_call {
-                    // Disable Rikiddo markets
-                    create_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
-                    edit_market { scoring_rule: RikiddoSigmoidFeeMarketEma, .. } => false,
-                    // Disable Court & SimpleDisputes dispute resolution mechanism
-                    create_market { dispute_mechanism: Court | SimpleDisputes, .. } => false,
-                    edit_market { dispute_mechanism: Court | SimpleDisputes, .. } => false,
-                    create_cpmm_market_and_deploy_assets {
-                        dispute_mechanism: Court | SimpleDisputes,
-                        ..
-                    } => false,
-                    _ => true,
-                }
-            }
-            Call::System(inner_call) => {
-                match inner_call {
-                    // Some "waste" storage will never impact proper operation.
-                    // Cleaning up storage should be done by pallets or independent migrations.
-                    kill_prefix { .. } => false,
-                    // See "killPrefix"
-                    kill_storage { .. } => false,
-                    // A parachain uses ParachainSystem to enact and authorized a runtime upgrade.
-                    // This ensure proper synchronization with the relay chain.
-                    // Calling `setCode` will wreck the chain.
-                    set_code { .. } => false,
-                    // See "setCode"
-                    set_code_without_checks { .. } => false,
-                    // Setting the storage directly is a dangerous operation that can lead to an
-                    // inconsistent state. There might be scenarios where this is helpful, however,
-                    // a well reviewed migration is better suited for that.
-                    set_storage { .. } => false,
-                    _ => true,
-                }
-            }
-            // Membership is managed by the respective Membership instance
-            Call::TechnicalCommittee(set_members { .. }) => false,
-            // There should be no reason to force vested transfer.
-            Call::Vesting(force_vested_transfer { .. }) => false,
-            _ => true,
-        }
+        true
     }
 }
 
 decl_common_types!();
 
-#[cfg(feature = "with-global-disputes")]
 create_runtime_with_additional_pallets!(
-    GlobalDisputes: zrml_global_disputes::{Call, Event<T>, Pallet, Storage} = 59,
+    Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
 );
 
-#[cfg(not(feature = "with-global-disputes"))]
-create_runtime_with_additional_pallets!();
+impl pallet_sudo::Config for Runtime {
+    type Call = Call;
+    type Event = Event;
+}
 
 impl_config_traits!();
 create_runtime_api!();

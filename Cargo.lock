@@ -12724,7 +12724,6 @@ dependencies = [
  "zeitgeist-primitives",
  "zeitgeist-runtime",
  "zrml-liquidity-mining",
- "zrml-swaps-rpc",
 ]
 
 [[package]]
@@ -12795,6 +12794,7 @@ dependencies = [
  "pallet-proxy",
  "pallet-randomness-collective-flip",
  "pallet-scheduler",
+ "pallet-sudo",
  "pallet-timestamp",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
@@ -13149,19 +13149,6 @@ dependencies = [
  "sp-runtime",
  "zeitgeist-primitives",
  "zrml-swaps",
-]
-
-[[package]]
-name = "zrml-swaps-rpc"
-version = "0.3.8"
-dependencies = [
- "jsonrpsee",
- "parity-scale-codec",
- "sp-api",
- "sp-blockchain",
- "sp-runtime",
- "zeitgeist-primitives",
- "zrml-swaps-runtime-api",
 ]
 
 [[package]]

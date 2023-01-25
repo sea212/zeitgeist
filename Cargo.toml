@@ -16,8 +16,8 @@ default-members = [
     "zrml/rikiddo",
     "zrml/simple-disputes",
     "zrml/swaps",
-    "zrml/swaps/rpc",
-    "zrml/swaps/runtime-api",
+#    "zrml/swaps/rpc",
+#    "zrml/swaps/runtime-api",
     "zrml/styx",
 ]
 members = [
@@ -41,8 +41,8 @@ members = [
     "zrml/simple-disputes",
     "zrml/swaps",
     "zrml/swaps/fuzz",
-    "zrml/swaps/rpc",
-    "zrml/swaps/runtime-api",
+#    "zrml/swaps/rpc",
+#    "zrml/swaps/runtime-api",
     "zrml/styx",
 ]
 resolver = "2"

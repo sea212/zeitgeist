@@ -68,7 +68,6 @@ fn additional_chain_spec_staging_battery_station(
             DEFAULT_STAKING_AMOUNT_BATTERY_STATION,
         )],
         collator_commission: DefaultCollatorCommission::get(),
-        crowdloan_fund_pot: DEFAULT_INITIAL_CROWDLOAN_FUNDS_BATTERY_STATION,
         inflation_info: DEFAULT_COLLATOR_INFLATION_INFO,
         nominations: vec![],
         parachain_bond_reserve_percent: DefaultParachainBondReservePercent::get(),

@@ -85,60 +85,38 @@ macro_rules! decl_common_types {
 
         // Council vote proportions
         // At least 50%
-        type EnsureRootOrHalfCouncil =
-            EitherOfDiverse<EnsureRoot<AccountId>, EnsureProportionAtLeast<AccountId, CouncilInstance, 1, 2>>;
+        type EnsureRootOrHalfCouncil = EnsureRoot<AccountId>;
 
         // At least 66%
-        type EnsureRootOrTwoThirdsCouncil =
-            EitherOfDiverse<EnsureRoot<AccountId>, EnsureProportionAtLeast<AccountId, CouncilInstance, 2, 3>>;
+        type EnsureRootOrTwoThirdsCouncil = EnsureRoot<AccountId>;
 
         // At least 75%
-        type EnsureRootOrThreeFourthsCouncil =
-            EitherOfDiverse<EnsureRoot<AccountId>, EnsureProportionAtLeast<AccountId, CouncilInstance, 3, 4>>;
+        type EnsureRootOrThreeFourthsCouncil = EnsureRoot<AccountId>;
 
         // At least 100%
-        type EnsureRootOrAllCouncil =
-            EitherOfDiverse<EnsureRoot<AccountId>, EnsureProportionAtLeast<AccountId, CouncilInstance, 1, 1>>;
+        type EnsureRootOrAllCouncil = EnsureRoot<AccountId>;
 
         // Technical committee vote proportions
         // At least 50%
         #[cfg(feature = "parachain")]
-        type EnsureRootOrHalfTechnicalCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, TechnicalCommitteeInstance, 1, 2>,
-        >;
+        type EnsureRootOrHalfTechnicalCommittee = EnsureRoot<AccountId>;
 
         // At least 66%
-        type EnsureRootOrTwoThirdsTechnicalCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, TechnicalCommitteeInstance, 2, 3>,
-        >;
+        type EnsureRootOrTwoThirdsTechnicalCommittee = EnsureRoot<AccountId>;
 
         // At least 100%
-        type EnsureRootOrAllTechnicalCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, TechnicalCommitteeInstance, 1, 1>,
-        >;
+        type EnsureRootOrAllTechnicalCommittee = EnsureRoot<AccountId>;
 
         // Advisory committee vote proportions
         // At least 50%
-        type EnsureRootOrHalfAdvisoryCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, AdvisoryCommitteeInstance, 1, 2>,
-        >;
+        type EnsureRootOrHalfAdvisoryCommittee = EnsureRoot<AccountId>;
 
         // Technical committee vote proportions
         // At least 66%
-        type EnsureRootOrTwoThirdsAdvisoryCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, AdvisoryCommitteeInstance, 2, 3>,
-        >;
+        type EnsureRootOrTwoThirdsAdvisoryCommittee = EnsureRoot<AccountId>;
 
         // At least 100%
-        type EnsureRootOrAllAdvisoryCommittee = EitherOfDiverse<
-            EnsureRoot<AccountId>,
-            EnsureProportionAtLeast<AccountId, AdvisoryCommitteeInstance, 1, 1>,
-        >;
+        type EnsureRootOrAllAdvisoryCommittee = EnsureRoot<AccountId>;
 
         #[cfg(feature = "std")]
         pub fn native_version() -> NativeVersion {

@@ -102,7 +102,11 @@ pub struct IsCallable;
 
 impl Contains<Call> for IsCallable {
     fn contains(call: &Call) -> bool {
-        true
+        match call {
+            Call::Balances(inner_call) => false,
+            Call::Tokens(inner_call) => false,
+            _ => true,
+        }
     }
 }
 

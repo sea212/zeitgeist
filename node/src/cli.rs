@@ -19,12 +19,8 @@
 #[cfg(feature = "parachain")]
 mod cli_parachain;
 
-use super::{
-    service::{
-        AdditionalRuntimeApiCollection, FullBackend, FullClient, IdentifyVariant,
-        RuntimeApiCollection,
-    },
-    ZEITGEIST_POLKADOT_PARACHAIN_ID,
+use super::service::{
+    AdditionalRuntimeApiCollection, FullBackend, FullClient, IdentifyVariant, RuntimeApiCollection,
 };
 use clap::Parser;
 #[cfg(feature = "parachain")]

@@ -40,18 +40,15 @@ pub use crate::parachain_params::*;
 pub use crate::parameters::*;
 use alloc::vec;
 use frame_support::{
-    traits::{ConstU16, ConstU32, Contains, EitherOfDiverse, EqualPrivilegeOnly, InstanceFilter},
+    traits::{ConstU32, Contains},
     weights::{constants::RocksDbWeight, ConstantMultiplier, IdentityFee},
 };
 use frame_system::EnsureRoot;
-use pallet_collective::{EnsureProportionAtLeast, PrimeDefaultVote};
 use pallet_transaction_payment::ChargeTransactionPayment;
 use sp_runtime::traits::{AccountIdConversion, AccountIdLookup, BlakeTwo256};
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
-use substrate_fixed::{types::extra::U33, FixedI128, FixedU128};
-use zeitgeist_primitives::{constants::*, types::*};
-use zrml_rikiddo::types::{EmaMarketVolume, FeeSigmoid, RikiddoSigmoidMV};
+use zeitgeist_primitives::types::*;
 #[cfg(feature = "parachain")]
 use {
     frame_support::traits::{AsEnsureOriginWithArg, Everything, Nothing},
@@ -101,7 +98,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 pub struct IsCallable;
 
 impl Contains<Call> for IsCallable {
-    fn contains(call: &Call) -> bool {
+    fn contains(_call: &Call) -> bool {
         true
     }
 }

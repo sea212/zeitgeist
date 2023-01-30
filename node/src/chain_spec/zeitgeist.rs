@@ -27,17 +27,14 @@ use sp_core::crypto::UncheckedInto;
 use zeitgeist_runtime::parameters::SS58Prefix;
 
 use zeitgeist_primitives::{
-    constants::{
-        ztg::{LIQUIDITY_MINING, LIQUIDITY_MINING_PTD},
-        BASE,
-    },
+    constants::BASE,
     types::{AccountId, Balance},
 };
 
 #[cfg(feature = "parachain")]
 use {
     super::{generate_inflation_config_function, Extensions},
-    crate::KUSAMA_PARACHAIN_ID,
+    crate::ZEITGEIST_POLKADOT_PARACHAIN_ID,
     zeitgeist_primitives::constants::ztg::TOTAL_INITIAL_ZTG,
     zeitgeist_runtime::{
         CollatorDeposit, DefaultBlocksPerRound, DefaultCollatorCommission,
@@ -86,8 +83,6 @@ fn endowed_accounts_staging_zeitgeist() -> Vec<EndowedAccountWithBalance> {
 fn additional_chain_spec_staging_zeitgeist(
     parachain_id: cumulus_primitives_core::ParaId,
 ) -> AdditionalChainSpec {
-    use zeitgeist_primitives::constants::BASE;
-
     AdditionalChainSpec {
         blocks_per_round: DefaultBlocksPerRound::get(),
         candidates: vec![

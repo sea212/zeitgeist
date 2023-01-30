@@ -21,7 +21,7 @@ mod service_parachain;
 mod service_standalone;
 
 use sp_runtime::traits::BlakeTwo256;
-use zeitgeist_primitives::types::{AccountId, Balance, Block, Index, MarketId, PoolId};
+use zeitgeist_primitives::types::{AccountId, Balance, Block, Index};
 
 use super::cli::Client;
 use sc_executor::NativeExecutionDispatch;

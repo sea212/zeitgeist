@@ -5,15 +5,15 @@
 set -euxo pipefail
 
 # For example, node/res/bs_parachain.json
-OUTPUT_FILE="node/res/zeitgeist_parachain.json"
+OUTPUT_FILE=""
 # For example, "Battery Station"
-PROD_CHAIN_NAME="Zeitgeist"
+PROD_CHAIN_NAME=""
 # For example, battery_station
-PROD_CHAIN_PROTOCOL_ID="zeitgeist_polkadot_v1"
+PROD_CHAIN_PROTOCOL_ID=""
 # For example, battery_station_mainnet
-PROD_CHAIN_ID="zeitgeist_polkadot"
+PROD_CHAIN_ID=""
 # For example, battery_station_staging
-STAGE_CHAIN="zeitgeist_staging"
+STAGE_CHAIN=""
 
 cargo build --profile=production --bin zeitgeist --features parachain
 ./target/production/zeitgeist build-spec --chain $STAGE_CHAIN --disable-default-bootnode > $OUTPUT_FILE

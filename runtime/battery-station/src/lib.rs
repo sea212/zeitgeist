@@ -107,10 +107,15 @@ decl_common_types!();
 
 create_runtime_with_additional_pallets!(
     Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
+    SoloToPara: cumulus_pallet_solo_to_para::{Call, Event, Pallet, Storage} = 151,
 );
 
 impl pallet_sudo::Config for Runtime {
     type Call = Call;
+    type Event = Event;
+}
+
+impl cumulus_pallet_solo_to_para::Config for Runtime {
     type Event = Event;
 }
 

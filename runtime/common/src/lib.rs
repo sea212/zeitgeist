@@ -336,7 +336,7 @@ macro_rules! impl_config_traits {
             type CheckAssociatedRelayNumber = cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
             type DmpMessageHandler = DmpQueue;
             type Event = Event;
-            type OnSystemEvent = ();
+            type OnSystemEvent = cumulus_pallet_solo_to_para::Pallet<Runtime>;
             type OutboundXcmpMessageSource = XcmpQueue;
             type ReservedDmpWeight = crate::parachain_params::ReservedDmpWeight;
             type ReservedXcmpWeight = crate::parachain_params::ReservedXcmpWeight;

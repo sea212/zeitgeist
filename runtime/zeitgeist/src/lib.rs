@@ -86,10 +86,10 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("zeitgeist-polkadot"),
     impl_name: create_runtime_str!("zeitgeist-forecasting-technologies"),
     authoring_version: 1,
-    spec_version: 42,
+    spec_version: 43,
     impl_version: 1,
     apis: RUNTIME_API_VERSIONS,
-    transaction_version: 19,
+    transaction_version: 20,
     state_version: 1,
 };
 
@@ -110,10 +110,15 @@ decl_common_types!();
 
 create_runtime_with_additional_pallets!(
     Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
+    SoloToPara: cumulus_pallet_solo_to_para::{Call, Event, Pallet, Storage} = 151,
 );
 
 impl pallet_sudo::Config for Runtime {
     type Call = Call;
+    type Event = Event;
+}
+
+impl cumulus_pallet_solo_to_para::Config for Runtime {
     type Event = Event;
 }
 

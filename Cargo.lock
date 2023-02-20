@@ -439,6 +439,7 @@ dependencies = [
  "common-runtime",
  "cumulus-pallet-dmp-queue",
  "cumulus-pallet-parachain-system",
+ "cumulus-pallet-solo-to-para",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-core",
@@ -1679,6 +1680,23 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "cumulus-pallet-solo-to-para"
+version = "0.1.0"
+source = "git+https://github.com/zeitgeistpm/cumulus?branch=moonbeam-polkadot-v0.9.29#e4f9bb8949e12e174ec6350cef81e556a5c94b5f"
+dependencies = [
+ "cumulus-pallet-parachain-system",
+ "cumulus-primitives-core",
+ "frame-support",
+ "frame-system",
+ "pallet-sudo",
+ "parity-scale-codec",
+ "polkadot-primitives",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
@@ -12778,6 +12796,7 @@ dependencies = [
  "common-runtime",
  "cumulus-pallet-dmp-queue",
  "cumulus-pallet-parachain-system",
+ "cumulus-pallet-solo-to-para",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-core",

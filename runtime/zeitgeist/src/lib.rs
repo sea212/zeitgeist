@@ -99,6 +99,7 @@ pub struct IsCallable;
 impl Contains<Call> for IsCallable {
     fn contains(call: &Call) -> bool {
         match call {
+            Call::AssetManager(_) => false,
             Call::Balances(_) => false,
             Call::Tokens(_) => false,
             _ => true,

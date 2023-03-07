@@ -333,7 +333,7 @@ macro_rules! impl_config_traits {
 
         #[cfg(feature = "parachain")]
         impl cumulus_pallet_parachain_system::Config for Runtime {
-            type CheckAssociatedRelayNumber = cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
+            type CheckAssociatedRelayNumber = cumulus_pallet_parachain_system::AnyRelayNumber;
             type DmpMessageHandler = DmpQueue;
             type Event = Event;
             type OnSystemEvent = cumulus_pallet_solo_to_para::Pallet<Runtime>;

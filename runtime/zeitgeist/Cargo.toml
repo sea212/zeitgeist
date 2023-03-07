@@ -21,6 +21,7 @@ pallet-preimage = { branch = "moonbeam-polkadot-v0.9.29", default-features = fal
 pallet-proxy = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-randomness-collective-flip = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-scheduler = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
+pallet-sudo = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-timestamp = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-transaction-payment = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
 pallet-transaction-payment-rpc-runtime-api = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/substrate" }
@@ -53,6 +54,7 @@ frame-system-benchmarking = { branch = "moonbeam-polkadot-v0.9.29", default-feat
 
 cumulus-pallet-dmp-queue = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
 cumulus-pallet-parachain-system = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
+cumulus-pallet-solo-to-para = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
 cumulus-pallet-xcm = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
 cumulus-pallet-xcmp-queue = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
 cumulus-primitives-core = { branch = "moonbeam-polkadot-v0.9.29", default-features = false, git = "https://github.com/zeitgeistpm/cumulus", optional = true }
@@ -128,6 +130,7 @@ parachain = [
 
     "cumulus-pallet-dmp-queue",
     "cumulus-pallet-parachain-system",
+    "cumulus-pallet-solo-to-para",
     "cumulus-pallet-xcm",
     "cumulus-pallet-xcmp-queue",
     "cumulus-primitives-core",
@@ -233,6 +236,7 @@ std = [
     "pallet-proxy/std",
     "pallet-randomness-collective-flip/std",
     "pallet-scheduler/std",
+    "pallet-sudo/std",
     "pallet-timestamp/std",
     "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-transaction-payment/std",
@@ -264,6 +268,7 @@ std = [
 
     "cumulus-pallet-dmp-queue?/std",
     "cumulus-pallet-parachain-system?/std",
+    "cumulus-pallet-solo-to-para?/std",
     "cumulus-pallet-xcm?/std",
     "cumulus-pallet-xcmp-queue?/std",
     "cumulus-primitives-core?/std",
@@ -329,6 +334,7 @@ try-runtime = [
     "pallet-timestamp/try-runtime",
     "pallet-randomness-collective-flip/try-runtime",
     "pallet-scheduler/try-runtime",
+    "pallet-sudo/try-runtime",
     "pallet-preimage/try-runtime",
 
     # Money runtime pallets
@@ -379,10 +385,11 @@ try-runtime = [
     "pallet-aura/try-runtime",
     "pallet-xcm/try-runtime",
     "pallet-crowdloan-rewards/try-runtime",
-    # Cumulus
 
+    # Cumulus
     "cumulus-pallet-dmp-queue?/try-runtime",
     "cumulus-pallet-parachain-system?/try-runtime",
+    "cumulus-pallet-solo-to-para?/try-runtime",
     "cumulus-pallet-xcm?/try-runtime",
     "cumulus-pallet-xcmp-queue?/try-runtime",
     "parachain-info?/try-runtime",

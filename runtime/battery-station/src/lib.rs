@@ -90,10 +90,10 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("zeitgeist"),
     impl_name: create_runtime_str!("zeitgeist"),
     authoring_version: 1,
-    spec_version: 41,
+    spec_version: 42,
     impl_version: 1,
     apis: RUNTIME_API_VERSIONS,
-    transaction_version: 18,
+    transaction_version: 19,
     state_version: 1,
 };
 
@@ -133,15 +133,21 @@ decl_common_types!();
 create_runtime_with_additional_pallets!(
     GlobalDisputes: zrml_global_disputes::{Call, Event<T>, Pallet, Storage} = 59,
     Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
+    SoloToPara: cumulus_pallet_solo_to_para::{Call, Event, Pallet, Storage} = 151,
 );
 
 #[cfg(not(feature = "with-global-disputes"))]
 create_runtime_with_additional_pallets!(
     Sudo: pallet_sudo::{Call, Config<T>, Event<T>, Pallet, Storage} = 150,
+    SoloToPara: cumulus_pallet_solo_to_para::{Call, Event, Pallet, Storage} = 151,
 );
 
 impl pallet_sudo::Config for Runtime {
     type Call = Call;
+    type Event = Event;
+}
+
+impl cumulus_pallet_solo_to_para::Config for Runtime {
     type Event = Event;
 }
 

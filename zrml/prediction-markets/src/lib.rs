@@ -64,13 +64,16 @@ mod pallet {
         constants::MILLISECS_PER_BLOCK,
         traits::{DisputeApi, DisputeResolutionApi, Swaps, ZeitgeistAssetManager},
         types::{
-            Asset, Bond, Deadlines, GlobalDisputeItem, Market, MarketBonds, MarketCreation,
+            Asset, Bond, Deadlines, Market, MarketBonds, MarketCreation,
             MarketDisputeMechanism, MarketPeriod, MarketStatus, MarketType, MultiHash,
             OldMarketDispute, OutcomeReport, Report, ScalarPosition, ScoringRule, SubsidyUntil,
         },
     };
     #[cfg(feature = "with-global-disputes")]
-    use zrml_global_disputes::GlobalDisputesPalletApi;
+    use {
+        zeitgeist_primitives::types::GlobalDisputeItem,
+        zrml_global_disputes::GlobalDisputesPalletApi,
+    };
 
     use zrml_liquidity_mining::LiquidityMiningPalletApi;
     use zrml_market_commons::MarketCommonsPalletApi;

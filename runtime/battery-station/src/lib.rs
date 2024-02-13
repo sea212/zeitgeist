@@ -107,59 +107,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     state_version: 1,
 };
 
-#[derive(scale_info::TypeInfo)]
-pub struct ContractsCallfilter;
-
-impl Contains<RuntimeCall> for ContractsCallfilter {
-    fn contains(runtime_call: &RuntimeCall) -> bool {
-        #[allow(clippy::match_like_matches_macro)]
-        match runtime_call {
-            RuntimeCall::System(inner_call) => match inner_call {
-                SystemCall::remark { .. } => true,
-                SystemCall::remark_with_event { .. } => true,
-                _ => false,
-            },
-            RuntimeCall::AssetManager(transfer { .. }) => true,
-            RuntimeCall::PredictionMarkets(inner_call) => {
-                match inner_call {
-                    buy_complete_set { .. } => true,
-                    dispute { .. } => true,
-                    // Only allow markets using Authorized or Court dispute mechanism
-                    create_market {
-                        dispute_mechanism:
-                            Some(MarketDisputeMechanism::Authorized)
-                            | Some(MarketDisputeMechanism::Court),
-                        ..
-                    } => true,
-                    edit_market {
-                        dispute_mechanism:
-                            Some(MarketDisputeMechanism::Authorized)
-                            | Some(MarketDisputeMechanism::Court),
-                        ..
-                    } => true,
-                    redeem_shares { .. } => true,
-                    report { .. } => true,
-                    sell_complete_set { .. } => true,
-                    _ => false,
-                }
-            }
-            RuntimeCall::Swaps(inner_call) => match inner_call {
-                pool_exit { .. } => true,
-                pool_exit_with_exact_asset_amount { .. } => true,
-                pool_exit_with_exact_pool_amount { .. } => true,
-                pool_join { .. } => true,
-                pool_join_with_exact_asset_amount { .. } => true,
-                pool_join_with_exact_pool_amount { .. } => true,
-                swap_exact_amount_in { .. } => true,
-                swap_exact_amount_out { .. } => true,
-                _ => false,
-            },
-            RuntimeCall::Orderbook(_) => true,
-            RuntimeCall::Parimutuel(_) => true,
-            _ => false,
-        }
-    }
-}
+pub type ContractsCallfilter = frame_support::traits::Everything;
 
 #[derive(scale_info::TypeInfo)]
 pub struct IsCallable;

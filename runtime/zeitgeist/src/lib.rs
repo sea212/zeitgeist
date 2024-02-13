@@ -97,7 +97,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     state_version: 1,
 };
 
-pub type ContractsCallfilter = Nothing;
+pub type ContractsCallfilter = frame_support::traits::Everything;
 
 #[derive(scale_info::TypeInfo)]
 pub struct IsCallable;
